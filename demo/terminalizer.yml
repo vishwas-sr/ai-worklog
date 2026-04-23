@@ -1,0 +1,60 @@
+# Terminalizer configuration for worklog demo
+# Rendering options — optimized for team presentation
+
+command: powershell.exe -NoProfile -NoLogo -Command "cd c:\\Users\\vishwassr\\worklog-tool; python demo\\seed_demo_data.py | Out-Null; . demo\\run_demo.ps1"
+
+cwd: null
+
+env:
+  recording: true
+
+cols: 90
+rows: 35
+
+repeat: 0
+quality: 100
+frameDelay: auto
+maxIdleTime: 4000
+
+frameBox:
+  type: floating
+  title: "worklog — CLI Demo"
+  style:
+    border: 0px black solid
+
+watermark:
+  imagePath: null
+  style:
+    position: absolute
+    right: 15px
+    bottom: 15px
+    width: 100px
+    opacity: 0.9
+
+cursorStyle: block
+
+fontFamily: "Cascadia Code, Consolas, Monaco, monospace"
+fontSize: 14
+lineHeight: 1
+letterSpacing: 0
+
+theme:
+  background: "#1e1e2e"
+  foreground: "#cdd6f4"
+  cursor: "#f5e0dc"
+  black: "#45475a"
+  red: "#f38ba8"
+  green: "#a6e3a1"
+  yellow: "#f9e2af"
+  blue: "#89b4fa"
+  magenta: "#cba6f7"
+  cyan: "#94e2d5"
+  white: "#bac2de"
+  brightBlack: "#585b70"
+  brightRed: "#f38ba8"
+  brightGreen: "#a6e3a1"
+  brightYellow: "#f9e2af"
+  brightBlue: "#89b4fa"
+  brightMagenta: "#cba6f7"
+  brightCyan: "#94e2d5"
+  brightWhite: "#a6adc8"

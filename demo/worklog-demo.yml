@@ -1,0 +1,139 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Terminalizer configuration for worklog demo  
+  # Rendering options — optimized for team presentation  
+    
+  command: powershell.exe -NoProfile -NoLogo -Command "cd c:\\Users\\vishwassr\\worklog-tool; python demo\\seed_demo_data.py | Out-Null; . demo\\run_demo.ps1"  
+    
+  cwd: C:\Users\vishwassr\worklog-tool  
+    
+  env:  
+    recording: true  
+    
+  cols: 90  
+  rows: 35  
+    
+  repeat: 0  
+  quality: 100  
+  frameDelay: auto  
+  maxIdleTime: 4000  
+    
+  frameBox:  
+    type: floating  
+    title: "worklog — CLI Demo"  
+    style:  
+      border: 0px black solid  
+    
+  watermark:  
+    imagePath: null  
+    style:  
+      position: absolute  
+      right: 15px  
+      bottom: 15px  
+      width: 100px  
+      opacity: 0.9  
+    
+  cursorStyle: block  
+    
+  fontFamily: "Cascadia Code, Consolas, Monaco, monospace"  
+  fontSize: 14  
+  lineHeight: 1  
+  letterSpacing: 0  
+    
+  theme:  
+    background: "#1e1e2e"  
+    foreground: "#cdd6f4"  
+    cursor: "#f5e0dc"  
+    black: "#45475a"  
+    red: "#f38ba8"  
+    green: "#a6e3a1"  
+    yellow: "#f9e2af"  
+    blue: "#89b4fa"  
+    magenta: "#cba6f7"  
+    cyan: "#94e2d5"  
+    white: "#bac2de"  
+    brightBlack: "#585b70"  
+    brightRed: "#f38ba8"  
+    brightGreen: "#a6e3a1"  
+    brightYellow: "#f9e2af"  
+    brightBlue: "#89b4fa"  
+    brightMagenta: "#cba6f7"  
+    brightCyan: "#94e2d5"  
+    brightWhite: "#a6adc8"  
+  
+# Records, feel free to edit them
+records:
+  - delay: 1018
+    content: "\e[?25l\e[3J\e[2J\e[m\e[H\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\e[H\e]0;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\a\e[?25h"
+  - delay: 29
+    content: "\e[?25l\e[38;5;13m\r\n  +=========================================================+\r\n  |                                                         |\r\n  |   worklog  --  Track and Summarize Your Work Sessions   |\r\n  |   Local-first CLI * Git * Copilot * Summaries           |\r\n  |                                                         |\r\n  +=========================================================+\e[38;5;8m\e[9;1H  A CLI tool that tracks work across AI/agentic sessions\r\n  for performance reviews, work journals, and self-assessment.\r\n\e[?25h"
+  - delay: 16
+    content: "\e[m\r\n"
+  - delay: 2517
+    content: "\e[?25l\e[38;5;6m\r\n  +----------------------------------------------------------+\e[38;5;14m\r\n  |  1. Available Commands\e[38;5;6m\r\n  +----------------------------------------------------------+\e[38;5;10m\e[17;1H  > \e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[m\e[38;5;15mworklog --help\e[19;1H\e[?25h"
+  - delay: 16
+    content: "\e[m"
+  - delay: 412
+    content: "\e[?25lUsage: worklog [OPTIONS] COMMAND [ARGS]...\e[21;1H  worklog — track and summarize AI/agentic work sessions.\e[23;1HOptions:\r\n  --help  Show this message and exit.\e[26;1HCommands:\r\n  config   View or modify worklog configuration.\r\n  init     Initialize the worklog data directory (on OneDrive).\r\n  log      Manually log a work entry.\r\n  onboard  Import all existing sessions and history for initial worklog...\r\n  scan     Import work entries from configured git repos.\r\n  stats    Quick stats for recent activity.\r\n  summary  Generate a work summary for the given time period.\r\n\e[?25h"
+  - delay: 2017
+    content: "\e[38;5;6m\r\n  +----------------------------------------------------------+\e[m\r\n\e[38;5;14m  |  2. Initialize Worklog (data stored on OneDrive)\e[m\r\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\n\e[38;5;10m  > \e[38;5;15mworklog init\e[K\e[m\r\n"
+  - delay: 8
+    content: |+
+
+  - delay: 411
+    content: "Worklog initialized at C:\\Users\\vishwassr\\OneDrive - Microsoft\\.worklog\r\nData is stored on OneDrive for automatic cloud backup.\r"
+  - delay: 10
+    content: |+
+
+  - delay: 2024
+    content: "\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\e[38;5;14m  |  3. Manually Log a Work Entry\e[m\r\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\n\e[38;5;10m  > \e[38;5;15mworklog log \"Deployed Scheduler hotfix to UAT\" -c bugfix -r Juno.Scheduler -t deploy,h\e[m\r\n\e[38;5;15m\e[34;90Hhotfix\e[m\r\n"
+  - delay: 7
+    content: |+
+
+  - delay: 591
+    content: "Logged: Deployed Scheduler hotfix to UAT\r"
+  - delay: 10
+    content: |+
+
+  - delay: 1535
+    content: "\e[38;5;10m  > \e[38;5;15mworklog log \"Sprint retro -- discussed on-call improvements\" -c meeting -t sprint\e[m\r\n"
+  - delay: 12
+    content: |+
+
+  - delay: 556
+    content: "Logged: Sprint retro -- discussed on-call improvements\r"
+  - delay: 9
+    content: |+
+
+  - delay: 2029
+    content: "\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\e[38;5;14m  |  4. Quick Stats Overview\e[m\r\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\n\e[38;5;10m  > \e[38;5;15mworklog stats --since 30d\e[K\e[m\r\n"
+  - delay: 8
+    content: |+
+
+  - delay: 441
+    content: "Entries: 23  (since 2026-03-17)\r\nSources: vscode-copilot=11, git=7, manual=5\r\nCategories: feature=6, bugfix=5, meeting=3, review=2, test=2, refactor=2, research=1, conf\r\n\e[34;90Hfig=1, docs=1\r"
+  - delay: 14
+    content: |+
+
+  - delay: 2519
+    content: "\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\e[38;5;14m  |  5. Generate Work Summary (Markdown)\e[m\r\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\n\e[38;5;10m  > \e[38;5;15mworklog summary --since 14d\e[K\e[m\r\n"
+  - delay: 8
+    content: |+
+
+  - delay: 414
+    content: "# Work Summary\r\n**Period:** 2026-04-02 — 2026-04-16\r\n**Total items:** 21\r\n\n## By Category\r\n- **feature**: 6\r\n- **meeting**: 3\r\n- **bugfix**: 3\r\n- **review**: 2\r\n- **refactor**: 2\r\n- **test**: 2\r\n- **docs**: 1\r\n- **config**: 1\r\n- **research**: 1\r\n\n## By Source\r\n- **vscode-copilot**: 10\r\n- **git**: 6\r\n- **manual**: 5\r\n\n## By Repository\r\n- **Juno.Scheduler**: 7\r\n- **worklog-tool**: 4\r\n- **Juno.LocBuild**: 2\r\n- **Juno.FileTracking**: 2\r\n- **Juno.HandOff**: 1\r\n- **Juno.Content**: 1\r\n\n## Most Touched Files\r\n- `worklog/formatters.py`\r\n- `worklog/cli.py`\r\n- `worklog/models.py`\r\n- `worklog/storage.py`\r\n- `src/HealthChecks/CosmosHealthCheck.cs`\r\n- `src/HealthChecks/ServiceBusHealthCheck.cs`\r\n- `docs/adr/017-polly-v8-resilience.md`\r\n- `src/Interfaces/IFileProcessor.cs`\r\n- `src/Processors/XliffFileProcessor.cs`\r\n- `src/Startup.cs`\r\n- `src/ServiceCollectionExtensions.cs`\r\n- `deploy/servicebus.bicep`\r\n- `deploy/parameters.prod.json`\r\n- `tests/Functional/SchedulerRetryTests.cs`\r\n- `tests/Functional/DeadLetterTests.cs`\r\n\n## Tags\r\n`1-1`, `adr`, `architecture`, `arm-templates`, `blob-storage`, `bugfix`, `capacity-plannin\r\n\e[34;90Hng`, `career`, `code-review`, `dependency-injection`, `deploy`, `design`, `dogfooding`, `du\r\n\e[34;90Hurable-functions`, `export`, `formatters`, `functional-tests`, `health-checks`, `hotfix`, `\r\n\e[34;90H`infrastructure`, `memory-leak`, `observability`, `okrs`, `pipeline`, `polly`, `productivit\r\n\e[34;90Hty`, `resilience`, `service-bus`, `sprint`, `testability`, `testcontainers`, `tooling`     \r\n\n## Activity Log\r\n\n### 2026-04-16\r\n- **22:23** [manual] Sprint retro -- discussed on-call improvements\r\n- **22:23** [manual] (Juno.Scheduler) Deployed Scheduler hotfix to UAT\r\n- **13:40** [vscode-copilot] (worklog-tool) Added HTML and CSV export formatters for workl\r\n\e[34;90Hlog summaries\r\n\n### 2026-04-15\r\n- **12:23** [manual] 1:1 with manager — discussed Q3 goals and career growth\r\n- **11:06** [vscode-copilot] (worklog-tool) Fixed off-by-one in onboard deduplication logi\r\n\e[34;90Hic\r\n\n### 2026-04-14\r\n- **10:49** [git] (worklog-tool) Initial commit: worklog CLI with scan, log, summary, stat\r\n\e[34;90Hts commands\r\n- **09:32** [vscode-copilot] (worklog-tool) Created worklog CLI tool for tracking AI-assis\r\n\e[34;90Hsted development sessions\r\n  > Local-first CLI: scans git, VS Code Copilot sessions, generates summaries\r\n\n### 2026-04-13\r\n- **16:15** [vscode-copilot] (Juno.Scheduler) Implemented health check endpoints for all S\r\n\e[34;90HScheduler function triggers\r\n- **15:58** [git] (Juno.Scheduler) Wrote ADR-017: Adopt Polly v8 for unified resilience st\r\n\e[34;90Htrategy\r\n\n### 2026-04-12\r\n- **14:41** [manual] Architecture review: proposed circuit breaker pattern for cross-servi\r\n\e[34;90Hice calls\r\n- **13:24** [vscode-copilot] (Juno.HandOff) Debugged memory leak in HandOff blob download \r\n\e[34;90H — disposed streams properly\r\n  > StreamReader was not disposing underlying BlobDownloadStreamingResult\r\n\n### 2026-04-11\r\n- **12:07** [git] (Juno.LocBuild) Extracted IFileProcessor interface for mock injection in\r\n\e[34;90Hn functional tests\r\n- **11:50** [vscode-copilot] (Juno.LocBuild) Refactored DI registration to support test-mo\r\n\e[34;90Hode toggle for LocBuild workers\r\n\n### 2026-04-10\r\n- **10:33** [git] (Juno.Scheduler) Updated ARM templates for Service Bus premium namespace\r\n\e[34;90He configuration\r\n- **09:16** [vscode-copilot] (Juno.Scheduler) Researched Azure Service Bus premium tier vs\r\n\e[34;90Hs standard for throughput needs\r\n\n### 2026-04-08\r\n- **16:59** [git] (Juno.Scheduler) Added 12 functional tests covering retry, timeout, and \r\n\e[34;90H dead-letter scenarios\r\n- **15:42** [vscode-copilot] (Juno.Scheduler) Built functional test suite for Scheduler us\r\n\e[34;90Hsing Testcontainers\r\n  > Cosmos DB emulator + Service Bus emulator with Docker Compose\r\n\n### 2026-04-06\r\n- **14:25** [manual] Sprint planning meeting — Q3 reliability OKRs\r\n- **13:08** [vscode-copilot] (Juno.Content) Code review for PR #4521: Content pipeline ret\r\n\e[34;90Htry improvements\r\n\n### 2026-04-04\r\n- **12:51** [git] (Juno.FileTracking) Implemented ReconciliationOrchestrator with Durable \r\n\e[34;90H Functions fan-out\r\n- **11:34** [vscode-copilot] (Juno.FileTracking) Designed new FileTracking status reconcil\r\n\e[34;90Hliation pipeline\r\n  > New pipeline to detect and reconcile stuck files older than 24h\r\n\n"
+  - delay: 3028
+    content: "\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\e[38;5;14m  |  6. Configure Git Repos to Scan\e[m\r\n\e[38;5;6m  +----------------------------------------------------------+\e[m\r\n\n\e[38;5;10m  > \e[38;5;15mworklog config --show\e[K\e[m\r\n"
+  - delay: 8
+    content: |+
+
+  - delay: 410
+    content: "{\r\n  \"git_repos\": [],\r\n  \"author_email\": null,\r\n  \"auto_commit\": true\r\n}\r"
+  - delay: 20
+    content: |+
+
+  - delay: 2042
+    content: "\n\e[38;5;10m  +=========================================================+\e[m\r\n\e[38;5;10m  |                                                         |\e[m\r\n\e[38;5;10m  |   [ok] All data stays local (OneDrive for backup)       |\e[m\r\n\e[38;5;10m  |   [ok] No cloud services or API keys needed             |\e[m\r\n\e[38;5;10m  |   [ok] Exports to Markdown, HTML, CSV, JSON             |\e[m\r\n\e[38;5;10m  |   [ok] Auto-scans git history + VS Code Copilot chats   |\e[m\r\n\e[38;5;10m  |                                                         |\e[m\r\n\e[38;5;11m  |   pip install -e .  ->  worklog init  ->  done!         |\e[m\r\n\e[38;5;10m  |                                                         |\e[m\r\n\e[38;5;10m  +=========================================================+\e[m\r\n\n"
