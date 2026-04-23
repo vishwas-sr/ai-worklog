@@ -53,7 +53,11 @@ def _install_instructions(include: set[str] | None = None) -> None:
 
     Appends to existing files if they already exist. Skips if already installed.
     """
-    pkg_dir = Path(__file__).parent.parent / "instructions"
+    # Look for instruction files bundled inside the package first,
+    # then fall back to the repo root (for editable installs)
+    pkg_dir = Path(__file__).parent / "instructions"
+    if not pkg_dir.exists():
+        pkg_dir = Path(__file__).parent.parent / "instructions"
     if not pkg_dir.exists():
         pkg_dir = Path.cwd() / "instructions"
     if not pkg_dir.exists():
