@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
@@ -42,17 +41,17 @@ class WorkEntry(BaseModel):
     id: UUID = Field(default_factory=uuid4)
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     source: Source
-    session_id: Optional[str] = None
-    repo: Optional[str] = None
+    session_id: str | None = None
+    repo: str | None = None
     action: str
     category: Category = Category.OTHER
     complexity: Complexity = Complexity.MEDIUM
-    impact: Optional[str] = None
+    impact: str | None = None
     files: list[str] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
-    details: Optional[str] = None
+    details: str | None = None
     collaboration: list[str] = Field(default_factory=list)
-    duration_minutes: Optional[float] = None
+    duration_minutes: float | None = None
 
 
 class WorkSummary(BaseModel):

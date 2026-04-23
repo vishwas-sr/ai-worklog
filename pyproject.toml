@@ -53,10 +53,13 @@ worklog = ["instructions/*.md"]
 
 [tool.ruff]
 target-version = "py310"
-line-length = 100
+line-length = 120
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"worklog/formatters.py" = ["E501"]  # HTML templates have long lines by nature
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

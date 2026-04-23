@@ -133,7 +133,7 @@ def _parse_chat_session(session_file: Path) -> dict | None:
     """
     entries = []
     try:
-        with open(session_file, "r", encoding="utf-8") as f:
+        with open(session_file, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if not line:
@@ -442,7 +442,7 @@ def _parse_copilot_cli_session(session_dir: Path) -> dict | None:
 
     events = []
     try:
-        with open(events_file, "r", encoding="utf-8") as f:
+        with open(events_file, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if not line:

@@ -4,7 +4,6 @@ from __future__ import annotations
 import csv
 import html as html_mod
 import io
-import json
 from datetime import datetime
 
 from .models import WorkSummary
@@ -12,7 +11,7 @@ from .models import WorkSummary
 
 def to_markdown(summary: WorkSummary) -> str:
     lines: list[str] = []
-    lines.append(f"# Work Summary")
+    lines.append("# Work Summary")
     lines.append(f"**Period:** {_fmt(summary.start)} — {_fmt(summary.end)}")
     lines.append(f"**Total items:** {summary.total_entries}")
     lines.append("")
@@ -354,7 +353,7 @@ def to_review(summary: WorkSummary) -> str:
     Groups by repo, shows impact + action, sorted by complexity.
     """
     lines: list[str] = []
-    lines.append(f"# Performance Review — Work Summary")
+    lines.append("# Performance Review — Work Summary")
     lines.append(f"**Period:** {_fmt(summary.start)} — {_fmt(summary.end)}")
     lines.append(f"**Total items:** {summary.total_entries}")
 
@@ -426,7 +425,7 @@ def to_review(summary: WorkSummary) -> str:
 def to_report(summary: WorkSummary) -> str:
     """Format entries as a status report grouped by date and category."""
     lines: list[str] = []
-    lines.append(f"# Status Report")
+    lines.append("# Status Report")
     lines.append(f"**Period:** {_fmt(summary.start)} — {_fmt(summary.end)}")
     lines.append("")
 

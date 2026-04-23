@@ -195,7 +195,7 @@ def verify_permissions() -> dict[str, bool]:
             )
             lines = proc.stdout.strip().splitlines()
             # Should have exactly one user ACE (the owner)
-            ace_lines = [l for l in lines if ":" in l and WORKLOG_DIR.name not in l]
+            ace_lines = [ln for ln in lines if ":" in ln and WORKLOG_DIR.name not in ln]
             result["owner_only_acl"] = len(ace_lines) <= 1
         except (subprocess.CalledProcessError, FileNotFoundError):
             pass
@@ -265,7 +265,7 @@ def read_entries(
         return []
 
     entries: list[WorkEntry] = []
-    with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
+    with open(SESSIONS_FILE, encoding="utf-8") as f:
         for lineno, line in enumerate(f, 1):
             line = line.strip()
             if not line:

@@ -7,10 +7,14 @@ from pathlib import Path
 import click
 
 from . import formatters as fmt
-from .models import Category, Complexity, Source, WorkEntry
+from .claude_scanner import scan_claude_code_sessions
+from .codex_scanner import scan_codex_sessions
+from .models import Category, Source, WorkEntry
 from .scanners import scan_git_repos
 from .storage import (
     WORKLOG_DIR,
+    _lock_down_permissions,
+    add_exclude,
     append_entries,
     append_entry,
     deduplicate_entries,
@@ -19,18 +23,17 @@ from .storage import (
     is_enabled,
     load_config,
     load_excludes,
-    add_exclude,
-    remove_exclude,
     read_entries,
+    remove_exclude,
     save_config,
     verify_permissions,
-    _lock_down_permissions,
 )
 from .summarizer import summarize
-from .vscode_scanner import scan_all_existing, scan_vscode_sessions, scan_copilot_cli_sessions, scan_copilot_memory
-from .claude_scanner import scan_claude_code_sessions
-from .codex_scanner import scan_codex_sessions
-
+from .vscode_scanner import (
+    scan_copilot_cli_sessions,
+    scan_copilot_memory,
+    scan_vscode_sessions,
+)
 
 # ---------------------------------------------------------------------------
 # Auto-install instruction files for AI tools
@@ -200,7 +203,10 @@ def lock():
 # ---- onboard ----
 
 @main.command()
-@click.option("--since", default=None, help="Only import sessions after this date (YYYY-MM-DD or relative: 30d, 3m). Default: all.")
+@click.option(
+    "--since", default=None,
+    help="Only import after this date (YYYY-MM-DD or relative: 30d, 3m). Default: all.",
+)
 @click.option("--dry-run", is_flag=True, help="Show what would be imported without writing.")
 @click.option("--git/--no-git", "include_git", default=True, help="Include git commit history from configured repos.")
 @click.option("--vscode/--no-vscode", "include_vscode", default=True, help="Include VS Code Copilot chat sessions.")
@@ -271,7 +277,9 @@ def onboard(since, dry_run, include_git, include_vscode, include_claude, include
     # Preview
     click.echo(f"\n{'=' * 60}")
     click.echo(f"Total entries to import: {len(all_new)}")
-    click.echo(f"Date range: {all_new[0].timestamp.strftime('%Y-%m-%d')} to {all_new[-1].timestamp.strftime('%Y-%m-%d')}")
+    start_str = all_new[0].timestamp.strftime("%Y-%m-%d")
+    end_str = all_new[-1].timestamp.strftime("%Y-%m-%d")
+    click.echo(f"Date range: {start_str} to {end_str}")
 
     from collections import Counter
     by_source = Counter(e.source.value for e in all_new)
@@ -325,7 +333,10 @@ def onboard(since, dry_run, include_git, include_vscode, include_claude, include
 @click.option("--add-repo", multiple=True, help="Add a git repo path to scan.")
 @click.option("--remove-repo", multiple=True, help="Remove a git repo path.")
 @click.option("--author", default=None, help="Set default git author email filter.")
-@click.option("--auto-commit/--no-auto-commit", default=None, help="Toggle auto git-commit on writes (for local version history).")
+@click.option(
+    "--auto-commit/--no-auto-commit", default=None,
+    help="Toggle auto git-commit on writes (for local version history).",
+)
 @click.option("--show", is_flag=True, help="Show current config.")
 def config(add_repo, remove_repo, author, auto_commit, show):
     """View or modify worklog configuration."""
@@ -430,7 +441,11 @@ def scan(since, until):
 @main.command()
 @click.option("--since", default="30d", help="Start date (YYYY-MM-DD or relative: 7d, 2w, 1m).")
 @click.option("--until", default=None, help="End date (YYYY-MM-DD, default=now).")
-@click.option("-f", "--format", "fmt_name", type=click.Choice(["markdown", "md", "html", "csv", "json", "review", "report"]), default="markdown")
+@click.option(
+    "-f", "--format", "fmt_name",
+    type=click.Choice(["markdown", "md", "html", "csv", "json", "review", "report"]),
+    default="markdown",
+)
 @click.option("-o", "--output", default=None, help="Write to file instead of stdout.")
 @click.option("--source", default=None, help="Filter by source.")
 @click.option("--category", default=None, help="Filter by category.")
