@@ -1,4 +1,5 @@
 """Output formatters: markdown, HTML, CSV, JSON."""
+
 from __future__ import annotations
 
 import csv
@@ -84,9 +85,16 @@ def to_html(summary: WorkSummary) -> str:
 
     cat_bars = ""
     cat_colors = {
-        "feature": "#4CAF50", "bugfix": "#f44336", "research": "#2196F3",
-        "review": "#9C27B0", "docs": "#FF9800", "config": "#607D8B",
-        "refactor": "#00BCD4", "test": "#8BC34A", "meeting": "#FFC107", "other": "#9E9E9E",
+        "feature": "#4CAF50",
+        "bugfix": "#f44336",
+        "research": "#2196F3",
+        "review": "#9C27B0",
+        "docs": "#FF9800",
+        "config": "#607D8B",
+        "refactor": "#00BCD4",
+        "test": "#8BC34A",
+        "meeting": "#FFC107",
+        "other": "#9E9E9E",
     }
     for cat, count in summary.by_category.items():
         pct = (count / max_cat) * 100
@@ -126,7 +134,9 @@ def to_html(summary: WorkSummary) -> str:
             color = cat_colors.get(cat, "#9E9E9E")
             repo_tag = f' <span class="entry-repo">{e.repo}</span>' if e.repo else ""
             cx = e.complexity.value if hasattr(e, "complexity") and e.complexity else ""
-            cx_badge = f' <span class="cx-badge" style="background:{cx_colors.get(cx, "#ccc")}">{cx}</span>' if cx else ""
+            cx_badge = (
+                f' <span class="cx-badge" style="background:{cx_colors.get(cx, "#ccc")}">{cx}</span>' if cx else ""
+            )
             dur = f' <span class="dur">{e.duration_minutes:.0f}m</span>' if e.duration_minutes else ""
 
             impact_line = ""
@@ -139,14 +149,16 @@ def to_html(summary: WorkSummary) -> str:
                 sections = _parse_details_sections(e.details)
                 for key, val in sections.items():
                     if key == "_raw":
-                        details_html += f'<p>{html_mod.escape(val)}</p>'
+                        details_html += f"<p>{html_mod.escape(val)}</p>"
                     else:
-                        details_html += f'<p><strong>{html_mod.escape(key)}:</strong> {html_mod.escape(val)}</p>'
+                        details_html += f"<p><strong>{html_mod.escape(key)}:</strong> {html_mod.escape(val)}</p>"
 
             # Show collaboration if present
             collab_html = ""
             if hasattr(e, "collaboration") and e.collaboration:
-                collab_html = '<div class="entry-collab">👥 ' + ", ".join(html_mod.escape(c) for c in e.collaboration) + '</div>'
+                collab_html = (
+                    '<div class="entry-collab">👥 ' + ", ".join(html_mod.escape(c) for c in e.collaboration) + "</div>"
+                )
 
             action_escaped = html_mod.escape(e.action)
             tags_html = " ".join(f'<span class="tag-sm">{html_mod.escape(t)}</span>' for t in e.tags)
@@ -154,9 +166,11 @@ def to_html(summary: WorkSummary) -> str:
             # If no details, make action more prominent with a "no details" note
             no_detail_note = ""
             if not e.details and not (hasattr(e, "impact") and e.impact):
-                no_detail_note = '<div class="entry-note">ℹ️ Imported from session history — no detailed description available</div>'
+                no_detail_note = (
+                    '<div class="entry-note">ℹ️ Imported from session history — no detailed description available</div>'
+                )
 
-            timeline_html += f'''<div class="entry">
+            timeline_html += f"""<div class="entry">
   <div class="entry-header">
     <span class="entry-time">{time_str}</span>
     <span class="entry-cat" style="background:{color}">{cat}</span>{repo_tag}{cx_badge}{dur}
@@ -167,7 +181,7 @@ def to_html(summary: WorkSummary) -> str:
   <div class="entry-details">{details_html}</div>
   <div class="entry-tags">{tags_html}</div>
   {no_detail_note}
-</div>\n'''
+</div>\n"""
         timeline_html += "</div>\n"
 
     return f"""<!DOCTYPE html>
@@ -273,26 +287,39 @@ def to_html(summary: WorkSummary) -> str:
 def to_csv(summary: WorkSummary) -> str:
     buf = io.StringIO()
     writer = csv.writer(buf)
-    writer.writerow([
-        "timestamp", "source", "repo", "category", "complexity",
-        "action", "impact", "files", "tags", "collaboration",
-        "details", "duration_minutes",
-    ])
+    writer.writerow(
+        [
+            "timestamp",
+            "source",
+            "repo",
+            "category",
+            "complexity",
+            "action",
+            "impact",
+            "files",
+            "tags",
+            "collaboration",
+            "details",
+            "duration_minutes",
+        ]
+    )
     for e in summary.entries:
-        writer.writerow([
-            e.timestamp.isoformat(),
-            e.source.value,
-            e.repo or "",
-            e.category.value,
-            e.complexity.value if e.complexity else "",
-            e.action,
-            e.impact or "",
-            "; ".join(e.files),
-            "; ".join(e.tags),
-            "; ".join(e.collaboration),
-            e.details or "",
-            e.duration_minutes or "",
-        ])
+        writer.writerow(
+            [
+                e.timestamp.isoformat(),
+                e.source.value,
+                e.repo or "",
+                e.category.value,
+                e.complexity.value if e.complexity else "",
+                e.action,
+                e.impact or "",
+                "; ".join(e.files),
+                "; ".join(e.tags),
+                "; ".join(e.collaboration),
+                e.details or "",
+                e.duration_minutes or "",
+            ]
+        )
     return buf.getvalue()
 
 
@@ -347,6 +374,7 @@ def _parse_details_sections(details: str | None) -> dict[str, str]:
 # Review format — performance review bullet points
 # ---------------------------------------------------------------------------
 
+
 def to_review(summary: WorkSummary) -> str:
     """Format entries as performance-review-ready bullet points.
 
@@ -366,9 +394,8 @@ def to_review(summary: WorkSummary) -> str:
 
     # Complexity breakdown
     from collections import Counter
-    complexity_counts = Counter(
-        e.complexity.value for e in summary.entries if e.complexity
-    )
+
+    complexity_counts = Counter(e.complexity.value for e in summary.entries if e.complexity)
     if complexity_counts:
         lines.append("## Complexity Breakdown")
         for c, n in complexity_counts.most_common():
@@ -387,9 +414,7 @@ def to_review(summary: WorkSummary) -> str:
         lines.append(f"## {repo}")
         entries = sorted(
             entries_by_repo[repo],
-            key=lambda e: complexity_order.get(
-                e.complexity.value if e.complexity else "medium", 2
-            ),
+            key=lambda e: complexity_order.get(e.complexity.value if e.complexity else "medium", 2),
         )
         for e in entries:
             # Impact line (bold) or fall back to action
@@ -422,6 +447,7 @@ def to_review(summary: WorkSummary) -> str:
 # Report format — weekly/monthly status report
 # ---------------------------------------------------------------------------
 
+
 def to_report(summary: WorkSummary) -> str:
     """Format entries as a status report grouped by date and category."""
     lines: list[str] = []
@@ -430,10 +456,7 @@ def to_report(summary: WorkSummary) -> str:
     lines.append("")
 
     # Key highlights (high/critical complexity items)
-    highlights = [
-        e for e in summary.entries
-        if e.complexity and e.complexity.value in ("high", "critical")
-    ]
+    highlights = [e for e in summary.entries if e.complexity and e.complexity.value in ("high", "critical")]
     if highlights:
         lines.append("## Key Highlights")
         for e in highlights:

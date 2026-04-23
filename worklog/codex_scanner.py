@@ -6,6 +6,7 @@ Sessions are persisted as JSONL/JSON files containing conversation history.
 Storage location: ~/.codex/ (all platforms), or CODEX_HOME env var.
 Key files: history.jsonl, sessions/, and project-specific session files.
 """
+
 from __future__ import annotations
 
 import json
@@ -53,11 +54,23 @@ def _extract_tags(text: str) -> list[str]:
     tags: list[str] = []
     lower = text.lower()
     kw_map = {
-        "python": "python", "typescript": "typescript", "javascript": "javascript",
-        "rust": "rust", "go ": "golang", ".net": "dotnet", "c#": "csharp",
-        "sql": "sql", "docker": "docker", "kubernetes": "kubernetes",
-        "openai": "openai", "codex": "codex", "gpt": "gpt",
-        "api": "api", "terraform": "terraform", "azure": "azure", "aws": "aws",
+        "python": "python",
+        "typescript": "typescript",
+        "javascript": "javascript",
+        "rust": "rust",
+        "go ": "golang",
+        ".net": "dotnet",
+        "c#": "csharp",
+        "sql": "sql",
+        "docker": "docker",
+        "kubernetes": "kubernetes",
+        "openai": "openai",
+        "codex": "codex",
+        "gpt": "gpt",
+        "api": "api",
+        "terraform": "terraform",
+        "azure": "azure",
+        "aws": "aws",
     }
     for kw, tag in kw_map.items():
         if kw in lower:
@@ -213,7 +226,7 @@ def _estimate_complexity(exchange_count: int, tool_calls: int) -> Complexity:
 def _build_details(session: dict) -> str:
     prompts = session["prompts"]
     parts = [f"[Context] User initiated Codex CLI session: {prompts[0][:200]}"]
-    steps = [f"({i+1}) {p[:100]}" for i, p in enumerate(prompts[:15]) if len(p) > 5]
+    steps = [f"({i + 1}) {p[:100]}" for i, p in enumerate(prompts[:15]) if len(p) > 5]
     if steps:
         parts.append("[Steps] " + ". ".join(steps))
     for r in reversed(session["responses"]):
@@ -238,8 +251,11 @@ def scan_codex_sessions(since: datetime | None = None) -> list[WorkEntry]:
         return entries
 
     skip_filenames = {
-        "config.toml", "settings.json", "settings.local.json",
-        "managed-settings.json", ".codex.json",
+        "config.toml",
+        "settings.json",
+        "settings.local.json",
+        "managed-settings.json",
+        ".codex.json",
     }
 
     for codex_dir in dirs:
@@ -267,17 +283,19 @@ def scan_codex_sessions(since: datetime | None = None) -> list[WorkEntry]:
 
                     ec = session["exchange_count"]
                     tc = session["tool_call_count"]
-                    entries.append(WorkEntry(
-                        timestamp=session["created"],
-                        source=Source.CODEX_CLI,
-                        session_id=sid,
-                        repo=session.get("repo"),
-                        action=session["title"],
-                        category=_categorize(session["title"]),
-                        complexity=_estimate_complexity(ec, tc),
-                        files=[],
-                        tags=_extract_tags(session["title"]),
-                        details=_build_details(session),
-                        duration_minutes=max(5.0, ec * 4.0),
-                    ))
+                    entries.append(
+                        WorkEntry(
+                            timestamp=session["created"],
+                            source=Source.CODEX_CLI,
+                            session_id=sid,
+                            repo=session.get("repo"),
+                            action=session["title"],
+                            category=_categorize(session["title"]),
+                            complexity=_estimate_complexity(ec, tc),
+                            files=[],
+                            tags=_extract_tags(session["title"]),
+                            details=_build_details(session),
+                            duration_minutes=max(5.0, ec * 4.0),
+                        )
+                    )
     return entries

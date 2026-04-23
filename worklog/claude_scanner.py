@@ -8,6 +8,7 @@ Cross-platform locations:
   macOS:   ~/.claude/
   Linux:   ~/.claude/
 """
+
 from __future__ import annotations
 
 import json
@@ -24,6 +25,7 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Claude Code session directory discovery
 # ---------------------------------------------------------------------------
+
 
 def _claude_code_dirs() -> list[Path]:
     """Return candidate Claude Code data directories."""
@@ -67,11 +69,22 @@ def _extract_tags(text: str) -> list[str]:
     tags: list[str] = []
     lower = text.lower()
     tech_keywords = {
-        "python": "python", "typescript": "typescript", "javascript": "javascript",
-        "rust": "rust", "go ": "golang", ".net": "dotnet", "c#": "csharp",
-        "sql": "sql", "docker": "docker", "kubernetes": "kubernetes",
-        "azure": "azure", "aws": "aws", "terraform": "terraform",
-        "api": "api", "mcp": "mcp", "claude": "claude",
+        "python": "python",
+        "typescript": "typescript",
+        "javascript": "javascript",
+        "rust": "rust",
+        "go ": "golang",
+        ".net": "dotnet",
+        "c#": "csharp",
+        "sql": "sql",
+        "docker": "docker",
+        "kubernetes": "kubernetes",
+        "azure": "azure",
+        "aws": "aws",
+        "terraform": "terraform",
+        "api": "api",
+        "mcp": "mcp",
+        "claude": "claude",
     }
     for kw, tag in tech_keywords.items():
         if kw in lower:
@@ -82,6 +95,7 @@ def _extract_tags(text: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # Session file parser
 # ---------------------------------------------------------------------------
+
 
 def _parse_claude_session(session_file: Path) -> dict | None:
     """Parse a Claude Code session file.
@@ -270,7 +284,7 @@ def _build_details(session: dict) -> str:
     steps = []
     for i, prompt in enumerate(prompts[:15]):
         if len(prompt) > 5:
-            steps.append(f"({i+1}) {prompt[:100]}")
+            steps.append(f"({i + 1}) {prompt[:100]}")
     if steps:
         parts.append("[Steps] " + ". ".join(steps))
 
@@ -290,6 +304,7 @@ def _build_details(session: dict) -> str:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def scan_claude_code_sessions(
     since: datetime | None = None,
@@ -325,9 +340,12 @@ def scan_claude_code_sessions(
                 for session_file in sdir.rglob(pattern):
                     # Skip config/settings files
                     if session_file.name in (
-                        "settings.json", "settings.local.json",
-                        ".claude.json", "managed-settings.json",
-                        "config.json", "mcp.json",
+                        "settings.json",
+                        "settings.local.json",
+                        ".claude.json",
+                        "managed-settings.json",
+                        "config.json",
+                        "mcp.json",
                     ):
                         continue
 

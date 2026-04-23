@@ -1,4 +1,5 @@
 """Build aggregated WorkSummary from a list of WorkEntry objects."""
+
 from __future__ import annotations
 
 from collections import Counter

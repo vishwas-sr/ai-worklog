@@ -7,6 +7,7 @@ Data directory is resolved in this order:
    - macOS:   ``~/Library/Application Support/worklog``
    - Windows: ``%LOCALAPPDATA%/worklog`` (or OneDrive if detected)
 """
+
 from __future__ import annotations
 
 import json
@@ -27,6 +28,7 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Data directory resolution
 # ---------------------------------------------------------------------------
+
 
 def _resolve_worklog_dir() -> Path:
     """Return the worklog data directory, respecting env-var overrides."""
@@ -51,10 +53,10 @@ SESSIONS_FILE = WORKLOG_DIR / "sessions.jsonl"
 CONFIG_FILE = WORKLOG_DIR / "config.json"
 
 DEFAULT_CONFIG = {
-    "git_repos": [],          # paths to scan for git activity
-    "author_email": None,     # git author filter
-    "auto_commit": True,      # auto git-commit locally after writes (for version history)
-    "enabled": True,          # set to False to pause all logging
+    "git_repos": [],  # paths to scan for git activity
+    "author_email": None,  # git author filter
+    "auto_commit": True,  # auto git-commit locally after writes (for version history)
+    "enabled": True,  # set to False to pause all logging
 }
 
 _REQUIRED_CONFIG_KEYS = {"git_repos", "enabled"}
@@ -83,9 +85,7 @@ def ensure_worklog_dir() -> None:
     if not SESSIONS_FILE.exists():
         SESSIONS_FILE.touch()
     if not CONFIG_FILE.exists():
-        CONFIG_FILE.write_text(
-            json.dumps(DEFAULT_CONFIG, indent=2), encoding="utf-8"
-        )
+        CONFIG_FILE.write_text(json.dumps(DEFAULT_CONFIG, indent=2), encoding="utf-8")
     if first_run:
         _lock_down_permissions()
 
@@ -128,8 +128,10 @@ def _lock_down_permissions() -> None:
         # 2. Grant current user full control (recurse into contents)
         subprocess.run(
             [
-                "icacls", str(WORKLOG_DIR),
-                "/grant:r", f"{username}:(OI)(CI)F",
+                "icacls",
+                str(WORKLOG_DIR),
+                "/grant:r",
+                f"{username}:(OI)(CI)F",
                 "/T",
             ],
             check=True,

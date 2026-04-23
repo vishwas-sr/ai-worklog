@@ -1,4 +1,5 @@
 """Scanners that pull work data from external sources into WorkEntry format."""
+
 from __future__ import annotations
 
 import logging

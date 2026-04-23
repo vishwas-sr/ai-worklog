@@ -1,4 +1,5 @@
 """CLI entry point for the worklog tool."""
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -113,9 +114,7 @@ def _parse_date(val: str) -> datetime:
             return datetime.now(timezone.utc) - timedelta(days=int(val[:-1]) * 30)
         return datetime.fromisoformat(val).replace(tzinfo=timezone.utc)
     except (ValueError, OverflowError) as exc:
-        raise click.BadParameter(
-            f"Invalid date '{val}'. Use YYYY-MM-DD or relative format (7d, 2w, 3m)."
-        ) from exc
+        raise click.BadParameter(f"Invalid date '{val}'. Use YYYY-MM-DD or relative format (7d, 2w, 3m).") from exc
 
 
 @click.group()
@@ -125,6 +124,7 @@ def main():
 
 
 # ---- init ----
+
 
 @main.command()
 @click.option("--claude", is_flag=True, help="Also install auto-logging for Claude Code.")
@@ -150,6 +150,7 @@ def init(claude, codex):
 
 
 # ---- enable / disable ----
+
 
 @main.command()
 def disable():
@@ -184,6 +185,7 @@ def status():
 
 # ---- lock (security) ----
 
+
 @main.command()
 def lock():
     """Restrict worklog folder to owner-only access and disable sharing."""
@@ -202,9 +204,11 @@ def lock():
 
 # ---- onboard ----
 
+
 @main.command()
 @click.option(
-    "--since", default=None,
+    "--since",
+    default=None,
     help="Only import after this date (YYYY-MM-DD or relative: 30d, 3m). Default: all.",
 )
 @click.option("--dry-run", is_flag=True, help="Show what would be imported without writing.")
@@ -282,6 +286,7 @@ def onboard(since, dry_run, include_git, include_vscode, include_claude, include
     click.echo(f"Date range: {start_str} to {end_str}")
 
     from collections import Counter
+
     by_source = Counter(e.source.value for e in all_new)
     by_cat = Counter(e.category.value for e in all_new)
     click.echo(f"By source: {', '.join(f'{s}={c}' for s, c in by_source.most_common())}")
@@ -307,7 +312,8 @@ def onboard(since, dry_run, include_git, include_vscode, include_claude, include
     existing_actions = {(e.source.value, e.action, e.timestamp.strftime("%Y-%m-%d")) for e in existing}
     excludes = load_excludes()
     truly_new = [
-        e for e in all_new
+        e
+        for e in all_new
         if (e.source.value, e.action, e.timestamp.strftime("%Y-%m-%d")) not in existing_actions
         and (e.session_id or str(e.id)) not in excludes
     ]
@@ -329,12 +335,14 @@ def onboard(since, dry_run, include_git, include_vscode, include_claude, include
 
 # ---- config ----
 
+
 @main.command()
 @click.option("--add-repo", multiple=True, help="Add a git repo path to scan.")
 @click.option("--remove-repo", multiple=True, help="Remove a git repo path.")
 @click.option("--author", default=None, help="Set default git author email filter.")
 @click.option(
-    "--auto-commit/--no-auto-commit", default=None,
+    "--auto-commit/--no-auto-commit",
+    default=None,
     help="Toggle auto git-commit on writes (for local version history).",
 )
 @click.option("--show", is_flag=True, help="Show current config.")
@@ -344,6 +352,7 @@ def config(add_repo, remove_repo, author, auto_commit, show):
 
     if show:
         import json
+
         click.echo(json.dumps(cfg, indent=2))
         return
 
@@ -370,6 +379,7 @@ def config(add_repo, remove_repo, author, auto_commit, show):
 
 # ---- log (manual entry) ----
 
+
 @main.command()
 @click.argument("action")
 @click.option("-c", "--category", type=click.Choice([c.value for c in Category]), default="other")
@@ -395,6 +405,7 @@ def log(action, category, source, repo, tags, details):
 
 
 # ---- scan (import from git / M365) ----
+
 
 @main.command()
 @click.option("--since", default="30d", help="Start date (YYYY-MM-DD or relative: 7d, 2w, 1m).")
@@ -438,11 +449,14 @@ def scan(since, until):
 
 # ---- summary ----
 
+
 @main.command()
 @click.option("--since", default="30d", help="Start date (YYYY-MM-DD or relative: 7d, 2w, 1m).")
 @click.option("--until", default=None, help="End date (YYYY-MM-DD, default=now).")
 @click.option(
-    "-f", "--format", "fmt_name",
+    "-f",
+    "--format",
+    "fmt_name",
     type=click.Choice(["markdown", "md", "html", "csv", "json", "review", "report"]),
     default="markdown",
 )
@@ -475,6 +489,7 @@ def summary(since, until, fmt_name, output, source, category, repo):
 
 # ---- stats (quick overview) ----
 
+
 @main.command()
 @click.option("--since", default="7d", help="Lookback period.")
 def stats(since):
@@ -486,6 +501,7 @@ def stats(since):
         return
 
     from collections import Counter
+
     cats = Counter(e.category.value for e in entries)
     sources = Counter(e.source.value for e in entries)
 
@@ -495,6 +511,7 @@ def stats(since):
 
 
 # ---- list (recent entries) ----
+
 
 @main.command("list")
 @click.option("--since", default="7d", help="Lookback period (default: 7d).")
@@ -524,6 +541,7 @@ def list_entries(since, limit, repo, category):
 
 
 # ---- delete ----
+
 
 @main.command()
 @click.option("--since", default="30d", help="Lookback period to show entries from.")
@@ -594,6 +612,7 @@ def delete(since, entry_id, yes):
 
 
 # ---- exclude ----
+
 
 @main.command()
 @click.argument("action", type=click.Choice(["add", "remove", "list"]))
@@ -673,6 +692,7 @@ def exclude(action, session_id, from_list):
 
 # ---- completions ----
 
+
 @main.command("completions")
 @click.argument("shell", type=click.Choice(["bash", "zsh", "fish"]))
 def completions(shell):
@@ -681,6 +701,7 @@ def completions(shell):
     Usage: eval "$(worklog completions bash)"
     """
     import os
+
     env_var = f"_{main.name.upper()}_COMPLETE"
     source_map = {"bash": "bash_source", "zsh": "zsh_source", "fish": "fish_source"}
     os.environ[env_var] = source_map[shell]

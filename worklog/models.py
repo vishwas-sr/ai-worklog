@@ -56,6 +56,7 @@ class WorkEntry(BaseModel):
 
 class WorkSummary(BaseModel):
     """Aggregated summary over a time period."""
+
     start: datetime
     end: datetime
     total_entries: int = 0

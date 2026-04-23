@@ -11,6 +11,7 @@ Storage locations per platform:
 
 Supports VS Code stable and Insiders builds.
 """
+
 from __future__ import annotations
 
 import json
@@ -29,6 +30,7 @@ log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Cross-platform VS Code storage paths
 # ---------------------------------------------------------------------------
+
 
 def _vscode_data_dirs() -> list[Path]:
     """Return candidate VS Code user-data directories for the current platform."""
@@ -67,6 +69,7 @@ def _get_vscode_storage_paths() -> tuple[list[Path], list[Path]]:
             ws_dirs.append(ws)
 
     return global_dirs, ws_dirs
+
 
 # Category inference from session titles
 _TITLE_CATEGORY_HINTS: list[tuple[list[str], Category]] = [
@@ -119,6 +122,7 @@ def _read_workspace_folder(ws_dir: Path) -> str | None:
 # ---------------------------------------------------------------------------
 # chatSessions JSONL parser
 # ---------------------------------------------------------------------------
+
 
 def _parse_chat_session(session_file: Path) -> dict | None:
     """Parse a chatSessions/*.jsonl file into structured conversation data.
@@ -195,10 +199,12 @@ def _parse_chat_session(session_file: Path) -> dict | None:
                 if "timestamp" in part:
                     last_timestamp = part["timestamp"]
 
-            responses.append({
-                "text": " ".join(texts).strip() if texts else None,
-                "tool_calls": tool_calls,
-            })
+            responses.append(
+                {
+                    "text": " ".join(texts).strip() if texts else None,
+                    "tool_calls": tool_calls,
+                }
+            )
 
     # Skip empty sessions
     if not prompts:
@@ -208,9 +214,7 @@ def _parse_chat_session(session_file: Path) -> dict | None:
     title = prompts[0][:120] if prompts else session_file.stem
 
     # Build response summary (concatenate all response texts for detail extraction)
-    all_response_text = " ".join(
-        r["text"] for r in responses if r.get("text")
-    )
+    all_response_text = " ".join(r["text"] for r in responses if r.get("text"))
     total_tool_calls = sum(len(r.get("tool_calls", [])) for r in responses)
 
     return {
@@ -259,7 +263,7 @@ def _build_details(session: dict) -> str:
     steps = []
     for i, prompt in enumerate(prompts[:15]):
         if len(prompt) > 5:  # skip trivial inputs like "1" or "yes"
-            steps.append(f"({i+1}) {prompt[:100]}")
+            steps.append(f"({i + 1}) {prompt[:100]}")
     if steps:
         parts.append("[Steps] " + ". ".join(steps))
 
@@ -273,9 +277,7 @@ def _build_details(session: dict) -> str:
         parts.append(f"[Outcome] {last_resp[:300]}")
 
     # Session metrics
-    parts.append(
-        f"Session had {exchange_count} exchanges with {tool_calls} tool calls."
-    )
+    parts.append(f"Session had {exchange_count} exchanges with {tool_calls} tool calls.")
 
     return " ".join(parts)
 
@@ -423,6 +425,7 @@ def scan_copilot_memory() -> list[WorkEntry]:
 # ---------------------------------------------------------------------------
 # Copilot CLI / Agency session-state scanner
 # ---------------------------------------------------------------------------
+
 
 def _copilot_cli_session_dirs() -> list[Path]:
     """Return Copilot CLI session-state directories."""
@@ -580,7 +583,7 @@ def scan_copilot_cli_sessions(since: datetime | None = None) -> list[WorkEntry]:
             title = session["title"]
 
             details_parts = [f"[Context] User initiated Copilot CLI session: {session['prompts'][0][:200]}"]
-            steps = [f"({i+1}) {p[:100]}" for i, p in enumerate(session["prompts"][:15]) if len(p) > 5]
+            steps = [f"({i + 1}) {p[:100]}" for i, p in enumerate(session["prompts"][:15]) if len(p) > 5]
             if steps:
                 details_parts.append("[Steps] " + ". ".join(steps))
             for r in reversed(session["responses"]):
@@ -594,21 +597,23 @@ def scan_copilot_cli_sessions(since: datetime | None = None) -> list[WorkEntry]:
                 )
             details_parts.append(f"Session had {ec} exchanges with {tc} tool calls.")
 
-            entries.append(WorkEntry(
-                timestamp=session["created"],
-                source=Source.VSCODE_COPILOT,
-                session_id=sid,
-                repo=session.get("repo"),
-                action=title,
-                category=_categorize_title(title),
-                complexity=_estimate_complexity(ec, tc),
-                impact=None,
-                files=session.get("files_modified", [])[:15],
-                tags=_extract_tags(title),
-                collaboration=[],
-                details=" ".join(details_parts),
-                duration_minutes=_estimate_duration(ec),
-            ))
+            entries.append(
+                WorkEntry(
+                    timestamp=session["created"],
+                    source=Source.VSCODE_COPILOT,
+                    session_id=sid,
+                    repo=session.get("repo"),
+                    action=title,
+                    category=_categorize_title(title),
+                    complexity=_estimate_complexity(ec, tc),
+                    impact=None,
+                    files=session.get("files_modified", [])[:15],
+                    tags=_extract_tags(title),
+                    collaboration=[],
+                    details=" ".join(details_parts),
+                    duration_minutes=_estimate_duration(ec),
+                )
+            )
 
     return entries
 
