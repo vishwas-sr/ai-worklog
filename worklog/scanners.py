@@ -80,12 +80,15 @@ def scan_git_repos(
             cmd.append(f"--author={author}")
 
         try:
-            result = subprocess.run(cmd, cwd=repo, capture_output=True, text=True)
+            result = subprocess.run(cmd, cwd=repo, capture_output=True, text=True, encoding="utf-8", errors="replace")
         except FileNotFoundError:
             log.warning("git not found — cannot scan repos")
             return entries
         if result.returncode != 0:
-            log.warning("git log failed for %s: %s", repo, result.stderr.strip())
+            log.warning("git log failed for %s: %s", repo, (result.stderr or "").strip())
+            continue
+
+        if not result.stdout:
             continue
 
         current: WorkEntry | None = None
