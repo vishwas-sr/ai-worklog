@@ -66,6 +66,11 @@ The agent will walk you through the entire setup — install the tool, ask which
 
 To use it: open VS Code Copilot Chat → select the agent picker (`@`) → add the URL above as a custom agent → type "set up worklog".
 
+### Prerequisites
+
+- **Python 3.10+** — [download from python.org](https://www.python.org/downloads/) if not already installed. Verify with `python --version`.
+- **pip** — included with Python. Verify with `pip --version`.
+
 ### Manual install
 
 ```bash

@@ -25,20 +25,33 @@ All data stays local. No cloud APIs, no telemetry, no accounts. Exports to Markd
 
 Follow these steps IN ORDER. Ask the user questions where indicated.
 
-### Step 1: Install
+### Step 1: Check prerequisites
 
+Before installing, verify Python 3.10+ is available:
 ```bash
-pip install -e "<path-to-this-repo>"
+python --version
+pip --version
 ```
 
-If not cloned:
+If Python is not installed, tell the user:
+> "Python 3.10 or later is required. Install it from https://www.python.org/downloads/ and restart your terminal."
+
+Do NOT proceed until Python is confirmed.
+
+### Step 2: Install
+
 ```bash
 pip install git+https://github.com/vishwas-sr/ai-worklog.git
 ```
 
+If the user has the repo cloned locally:
+```bash
+pip install -e "<path-to-this-repo>"
+```
+
 Verify: `worklog --help`
 
-### Step 2: Ask which AI tools to enable
+### Step 3: Ask which AI tools to enable
 
 Before running init, ASK the user:
 
@@ -57,7 +70,7 @@ Based on their answer, run the appropriate init command:
 
 Note: If `~/.claude/` or `~/.codex/` already exists, init auto-detects them even without flags.
 
-### Step 3: Configure git repos
+### Step 4: Configure git repos
 
 ASK the user:
 > "Do you have git repos you'd like to track? If so, provide the paths and your git author email."
@@ -68,7 +81,7 @@ worklog config --add-repo /path/to/repo
 worklog config --author user@example.com
 ```
 
-### Step 4: Import existing sessions
+### Step 5: Import existing sessions
 
 Always preview first:
 ```bash
@@ -83,7 +96,7 @@ If yes:
 worklog onboard
 ```
 
-### Step 5: Verify and demonstrate
+### Step 6: Verify and demonstrate
 
 Run these commands and show the output:
 ```bash
@@ -92,13 +105,13 @@ worklog list --since 30d -n 10
 worklog stats --since 30d
 ```
 
-### Step 6: Lock permissions
+### Step 7: Lock permissions
 
 ```bash
 worklog lock
 ```
 
-### Step 7: Show the user what's next
+### Step 8: Show the user what's next
 
 Explain:
 - Sessions are now auto-logged in their AI tools — no manual effort needed
