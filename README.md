@@ -69,10 +69,11 @@ To use it: open VS Code Copilot Chat → select the agent picker (`@`) → add t
 ### Manual install
 
 ```bash
-pip install worklog
+pip install git+https://github.com/vishwas-sr/ai-worklog.git
+
 # or from source:
 git clone https://github.com/vishwas-sr/ai-worklog.git
-cd worklog
+cd ai-worklog
 pip install -e .
 ```
 
