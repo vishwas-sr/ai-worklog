@@ -48,6 +48,11 @@ def _resolve_worklog_dir() -> Path:
     return Path(user_data_dir("worklog", appauthor=False))
 
 
+def is_onedrive_backed() -> bool:
+    """Return True if the worklog directory is inside a OneDrive folder."""
+    return "onedrive" in str(WORKLOG_DIR).lower()
+
+
 WORKLOG_DIR = _resolve_worklog_dir()
 SESSIONS_FILE = WORKLOG_DIR / "sessions.jsonl"
 CONFIG_FILE = WORKLOG_DIR / "config.json"

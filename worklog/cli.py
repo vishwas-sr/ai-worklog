@@ -22,6 +22,7 @@ from .storage import (
     delete_entry,
     ensure_worklog_dir,
     is_enabled,
+    is_onedrive_backed,
     load_config,
     load_excludes,
     read_entries,
@@ -133,10 +134,18 @@ def init(claude, codex):
     """Initialize the worklog data directory and install auto-logging instructions."""
     ensure_worklog_dir()
     click.echo(f"Worklog initialized at {WORKLOG_DIR}")
-    click.echo("Data is stored locally with automatic git versioning.")
+
+    if is_onedrive_backed():
+        click.echo("OneDrive detected — your worklog is automatically backed up to the cloud.")
+    else:
+        click.echo("Data is stored locally with automatic git versioning.")
+
     perms = verify_permissions()
     if perms["permissions_applied"]:
-        click.echo("Permissions: owner-only access enforced, sharing disabled.")
+        if is_onedrive_backed():
+            click.echo("Permissions: folder locked to your account only — no one else can access or share it.")
+        else:
+            click.echo("Permissions: owner-only access enforced.")
     else:
         click.echo("Run 'worklog lock' to restrict access to your account only.")
 
